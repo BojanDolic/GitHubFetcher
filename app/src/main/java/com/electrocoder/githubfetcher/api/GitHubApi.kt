@@ -1,11 +1,25 @@
 package com.electrocoder.githubfetcher.api
 
+import androidx.lifecycle.LiveData
 import com.electrocoder.githubfetcher.models.ApiResponse
 import com.electrocoder.githubfetcher.models.User
+import com.electrocoder.githubfetcher.models.UsersResponse
+import retrofit2.Call
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
-public interface GitHubApi {
+interface GitHubApi {
 
+    @GET("search/users")
+    suspend fun searchUsers(@Query("q") q: String): Response<UsersResponse>
 
-    fun searchUsers(): ApiResponse<List<User>>
+    /**
+     * Sends a GET request to the server for user details
+     * @param name name of the user for which we retrieve details
+     */
+    @GET("users/{username}")
+    suspend fun getUserWithName(@Path("username") name: String): Response<User>
 
 }

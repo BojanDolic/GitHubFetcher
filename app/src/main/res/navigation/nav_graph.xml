@@ -7,7 +7,23 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.electrocoder.githubfetcher.fragments.MainFragment"
+        android:name="com.electrocoder.githubfetcher.ui.fragments.MainFragment"
         android:label="GitHub Fetcher"
-        tools:layout="@layout/main_fragment" />
+        tools:layout="@layout/main_fragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment"
+            app:popUpTo="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.electrocoder.githubfetcher.ui.fragments.UserDetailsFragment"
+        android:label="User details"
+        tools:layout="@layout/user_details_fragment" >
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </fragment>
+
+
 </navigation>

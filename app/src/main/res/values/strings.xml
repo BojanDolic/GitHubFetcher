@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GitHubFetcher</string>
+    <string name="username_search_text">Enter GitHub username</string>
+    <string name="public_repositories_text">Public repositories:</string>
 </resources>
