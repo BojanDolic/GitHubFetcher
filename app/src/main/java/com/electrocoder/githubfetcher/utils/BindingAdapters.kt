@@ -1,6 +1,7 @@
 package com.electrocoder.githubfetcher.utils
 
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isGone
@@ -24,6 +25,26 @@ fun loadImage(image: ImageView,url: String?) {
 
 @BindingAdapter("showTextOrHide")
 fun hideViewIfNull(text: MaterialButton, type: Any?) {
+    if(type is String?) {
+        if(type.isNullOrEmpty()) {
+            text.isGone = true
+        } else {
+            text.isGone = false
+            text.text = type
+        }
+    } else if(type is Int?) {
+        if(type == null) {
+            text.isGone = true
+        } else {
+            text.isGone = false
+            text.text = type.toString()
+        }
+    }
+}
+
+
+@BindingAdapter("showTextOrHide")
+fun hideViewIfNull(text: TextView, type: Any?) {
     if(type is String?) {
         if(type.isNullOrEmpty()) {
             text.isGone = true

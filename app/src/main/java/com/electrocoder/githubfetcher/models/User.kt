@@ -10,17 +10,25 @@ data class User(
     @SerializedName("login")
     val name: String = "",
 
+    @SerializedName("name")
+    val fullName: String? = "",
+
     @SerializedName("company")
     val company: String? = "",
 
     @SerializedName("avatar_url")
     val avatarUrl: String? = "",
 
+    @SerializedName("email")
     val email: String? = "",
+
     val location: String? = "",
 
     @SerializedName("public_repos")
     val publicRepos: Int = 0,
+
+    @SerializedName("repos_url")
+    val reposUrl: String = "",
 
     @SerializedName("followers")
     val followers: Int = 0,

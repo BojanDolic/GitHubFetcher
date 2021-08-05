@@ -21,18 +21,16 @@ class MainViewModel @Inject constructor(
 
     private var searchJob: Job = Job()
 
-    val searchText: MutableLiveData<String> = MutableLiveData("")
+    private val searchText: MutableLiveData<String> = MutableLiveData()
 
-    val users: MutableLiveData<UsersResponse> = MutableLiveData()
-    val usersObserver: LiveData<UsersResponse> get() = users
+    private val users: MutableLiveData<UsersResponse> = MutableLiveData()
 
     val usersList: LiveData<UsersResponse> = Transformations.switchMap(searchText) { searchQuery ->
         repository.searchUsers(searchQuery).asLiveData(viewModelScope.coroutineContext)
-        //searchUsers(searchQuery)
     }
 
 
-    fun searchUsers(q: String): MutableLiveData<UsersResponse> {
+    /*fun searchUsers(q: String): MutableLiveData<UsersResponse> {
         val result: MutableLiveData<UsersResponse> = MutableLiveData()
         viewModelScope.launch {
             repository.searchUsers(q)
@@ -42,10 +40,10 @@ class MainViewModel @Inject constructor(
                 }
         }
         return result
-    }
+    }*/
 
 
-    public fun setSearchQuery(q: String) {
+    fun setSearchQuery(q: String) {
         var textChange = ""
 
             if(searchJob.isActive)

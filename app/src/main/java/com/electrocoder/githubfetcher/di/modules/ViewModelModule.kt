@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.electrocoder.githubfetcher.di.viewmodelfactory.ViewModelFactory
 import com.electrocoder.githubfetcher.viewmodels.MainViewModel
+import com.electrocoder.githubfetcher.viewmodels.RepositoriesViewModel
 import com.electrocoder.githubfetcher.viewmodels.UserDetailsViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -27,6 +28,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(UserDetailsViewModel::class)
     abstract fun userDetailsViewModel(userDetailsViewModel: UserDetailsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RepositoriesViewModel::class)
+    abstract fun reposViewModel(repositoriesViewModel: RepositoriesViewModel): ViewModel
 
 
 

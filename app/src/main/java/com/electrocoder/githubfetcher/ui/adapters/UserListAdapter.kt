@@ -45,11 +45,8 @@ class UserListAdapter: ListAdapter<User, UserListAdapter.ViewHolder>(UserDiffUti
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        Log.d("TAG", "onViewCreated: BINDOVANJE $position")
         val user = getItem(position)
         holder.update(user)
-
     }
 
 }

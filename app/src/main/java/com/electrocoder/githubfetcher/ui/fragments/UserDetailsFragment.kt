@@ -36,7 +36,7 @@ class UserDetailsFragment : DaggerFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = UserDetailsFragmentBinding.inflate(
             inflater,
             container,
@@ -56,7 +56,16 @@ class UserDetailsFragment : DaggerFragment() {
             binding.user = user
         }
 
-        viewModel.queryByUserName(args.username)
+        if(viewModel.user == null)
+            viewModel.queryByUserName(args.username)
+
+        binding.userReposBtn.setOnClickListener {
+            findNavController().navigate(
+                UserDetailsFragmentDirections.actionUserDetailsFragmentToRepositoriesFragment(
+                    viewModel.user?.reposUrl ?: ""
+                )
+            )
+        }
 
     }
 

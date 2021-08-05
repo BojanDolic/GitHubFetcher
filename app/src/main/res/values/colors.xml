@@ -8,9 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="indigo">#3F51B5</color>
+    <color name="indigo_dark">#303F9F</color>
+    <color name="indigo_lighter">#536DFE</color>
+
     <color name="green">#04951C</color>
     <color name="light_green">#0DB629</color>
     <color name="red">#BF3737</color>
+    <color name="purple">#5146EF</color>
 
     <color name="card_outline_color">#42686868</color>
 </resources>

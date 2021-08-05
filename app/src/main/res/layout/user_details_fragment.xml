@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -21,22 +21,22 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:titleCentered="true" />
 
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/user_details_card"
+            style="@style/OutlinedCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginHorizontal="9dp"
             android:layout_marginVertical="9dp"
-            style="@style/OutlinedCard">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -44,39 +44,59 @@
 
                 <ImageView
                     android:id="@+id/userdetails_avatar"
+                    loadImageUrl="@{user.avatarUrl}"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/userdetails_fullname"
                     app:layout_constraintEnd_toEndOf="parent"
-                    loadImageUrl="@{user.avatarUrl}" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+
+                <TextView
+                    android:id="@+id/userdetails_fullname"
+                    showTextOrHide="@{user.fullName}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/kanit_regular"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toTopOf="@id/userdetails_username"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/userdetails_avatar" />
 
                 <TextView
                     android:id="@+id/userdetails_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/userdetails_avatar"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/divider"
-                    android:layout_marginTop="12dp"
                     android:layout_marginBottom="9dp"
-                    android:textSize="18sp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/kanit_regular"
+                    android:maxLines="1"
                     android:text="@{user.name}"
                     android:textAlignment="center"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/kanit_regular" />
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toTopOf="@id/divider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/userdetails_fullname"
+                    app:layout_goneMarginTop="12dp" />
+
+
 
                 <View
                     android:id="@+id/divider"
                     android:layout_width="200dp"
                     android:layout_height="1dp"
                     android:background="@color/card_outline_color"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/userdetails_company"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/userdetails_username"
-                    app:layout_constraintBottom_toTopOf="@id/userdetails_company"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/userdetails_username" />
 
 
                 <!-- <TextView
@@ -96,23 +116,159 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/userdetails_company"
-                    android:layout_width="wrap_content"
+                    style="@style/TextButtonDetails"
+                    showTextOrHide="@{user.company}"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/divider"
+                    android:fontFamily="@font/kanit_light"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    app:icon="@drawable/building_icon"
+                    app:iconTint="@color/red"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/userdetails_email"
+                    style="@style/TextButtonDetails"
+                    showTextOrHide="@{user.email}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="email"
+                    android:fontFamily="@font/kanit_light"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    app:icon="@drawable/email_icon"
+                    app:iconTint="@color/green"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/userdetails_company" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/userdetails_location"
+                    style="@style/TextButtonDetails"
+                    showTextOrHide="@{user.location}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kanit_light"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    app:icon="@drawable/location_icon"
+                    app:iconTint="@color/purple"
+                    app:layout_constraintBottom_toTopOf="@id/user_details_followers_card"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/userdetails_email" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/details_barrier"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:barrierAllowsGoneWidgets="true"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="userdetails_company, userdetails_email, userdetails_location" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/user_details_followers_card"
+                    style="@style/OutlinedCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="9dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/details_barrier"
+                    app:strokeWidth="1dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.helper.widget.Flow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:constraint_referenced_ids="userdetails_followers, userdetails_following, userdetails_repos"
+                            app:flow_wrapMode="chain"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/userdetails_followers"
+                            style="@style/TextButtonDetails"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/kanit_light"
+                            android:text="@{`Followers: \n` + user.followers}"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/userdetails_following"
+                            style="@style/TextButtonDetails"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/kanit_light"
+                            android:text="@{`Following: \n` + user.following}"
+                            android:textAlignment="center"
+                            android:textSize="14sp"
+                            tools:ignore="MissingConstraints" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/userdetails_repos"
+                            style="@style/TextButtonDetails"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/kanit_light"
+                            android:text="@{`Public repositories: \n` + user.publicRepos}"
+                            android:textAlignment="center"
+                            android:textSize="14sp"
+                            tools:ignore="MissingConstraints" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/user_repos_card"
+            style="@style/OutlinedCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="9dp"
+            android:layout_marginVertical="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_details_card"
+            android:visibility="@{user.publicRepos > 0 ? View.VISIBLE : View.GONE}">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/user_repos_btn"
+                    style="@style/TextButtonDetails"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="12dp"
-                    app:cornerRadius="60dp"
-                    showTextOrHide="@{user.company}"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:clickable="false"
-                    app:backgroundTint="@color/red"
-                    app:icon="@drawable/building_icon"
-                    app:iconTint="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:fontFamily="@font/kanit_light"
+                    android:text="@string/browse_repositories_text"
+                    android:clickable="true"
+                    app:icon="@drawable/book_icon"
+                    app:iconSize="28dp"
+                    android:textAlignment="center"
                     android:textSize="14sp"
-                    app:iconPadding="24dp"/>
+                    android:focusable="true" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

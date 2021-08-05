@@ -23,6 +23,22 @@
         <argument
             android:name="username"
             app:argType="string" />
+        <action
+            android:id="@+id/action_userDetailsFragment_to_repositoriesFragment"
+            app:destination="@id/repositoriesFragment"
+            app:popUpTo="@id/userDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/repositoriesFragment"
+        android:name="com.electrocoder.githubfetcher.ui.fragments.RepositoriesFragment"
+        android:label="Repositories"
+        tools:layout="@layout/repositories_fragment" >
+
+        <argument
+            android:name="reposUrl"
+            app:argType="string" />
+
     </fragment>
 
 
