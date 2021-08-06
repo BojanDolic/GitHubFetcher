@@ -77,12 +77,13 @@ class Repository @Inject constructor(
      * @return flow of paginated data
      */
     fun getRepoCommits(url: String): Flow<PagingData<Commit>> {
+        val formattedUrl = url.replace("{/sha}", "")
         return Pager(
             config = PagingConfig(
                 pageSize = 30,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { CommitsPagingSource(api, url) }
+            pagingSourceFactory = { CommitsPagingSource(api, formattedUrl) }
         ).flow.flowOn(Dispatchers.IO)
     }
 

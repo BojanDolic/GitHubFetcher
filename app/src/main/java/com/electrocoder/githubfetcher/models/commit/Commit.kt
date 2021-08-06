@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 data class Commit(
     @SerializedName("node_id") val id: String = "",
     @SerializedName("commit") val commit: InnerCommit = InnerCommit(),
-    @SerializedName("commiter") val userCommited: User = User(),
+    @SerializedName("committer") val userCommited: User = User(),
 )

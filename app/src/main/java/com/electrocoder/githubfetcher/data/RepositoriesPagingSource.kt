@@ -21,17 +21,24 @@ class RepositoriesPagingSource(
             val response = api.getUserRepositories(url, position)
             val repositories = response.body()
 
-            val nextPage = if (repositories?.isEmpty() == true) {
-                null
-            } else {
-                position + 1 // 30 elements by default
-            }
+            if(repositories != null) {
+                val nextPage = if (repositories.isEmpty()) {
+                    null
+                } else {
+                    position + 1 // 30 elements by default
+                }
 
-            LoadResult.Page(
-                data = repositories ?: listOf(),
-                prevKey = if (position == 1) null else position + 1,
-                nextKey = nextPage
-            )
+                LoadResult.Page(
+                    data = repositories,
+                    prevKey = if (position == 1) null else position + 1,
+                    nextKey = nextPage
+                )
+            }
+            else {
+                LoadResult.Error(
+                    HttpException(response)
+                )
+            }
 
         } catch (e: IOException) {
             return LoadResult.Error(e)

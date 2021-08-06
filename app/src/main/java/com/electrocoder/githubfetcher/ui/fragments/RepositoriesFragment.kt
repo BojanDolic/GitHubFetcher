@@ -96,7 +96,11 @@ class RepositoriesFragment : DaggerFragment() {
     }
 
     private fun handleClick(repo: Repo) {
-
+        findNavController().navigate(
+            RepositoriesFragmentDirections.actionRepositoriesFragmentToCommitsFragment(
+                repo.commitsUrl
+            )
+        )
     }
 
     override fun onDestroy() {

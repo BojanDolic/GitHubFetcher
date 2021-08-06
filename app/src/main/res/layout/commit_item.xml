@@ -13,7 +13,9 @@
         style="@style/OutlinedCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="9dp">
+        android:layout_marginHorizontal="9dp"
+        android:layout_marginVertical="9dp"
+        app:contentPadding="9dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -35,7 +37,6 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/verified_container"
-                style="@style/OutlinedCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toStartOf="@id/commit_date_text"
@@ -43,12 +44,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:strokeColor="@{commit.commit.verification.verified ? @color/green : @color/red}"
-                app:strokeWidth="1dp">
+                app:strokeWidth="1dp"
+                style="@style/OutlinedCard"
+                app:contentPaddingRight="9dp"
+                app:contentPaddingLeft="9dp"
+                app:contentPaddingTop="3dp"
+                app:contentPaddingBottom="3dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/manrope_regular"
+                    android:fontFamily="@font/manrope_extralight"
                     android:text="Verified" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -63,32 +69,24 @@
                 android:fontFamily="@font/manrope_regular"
                 android:maxLines="3"
                 android:text="@{commit.commit.message}"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/commit_avatar"
                 app:layout_constraintTop_toBottomOf="@id/verified_container" />
 
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="6dp"
-                app:dividerInsetEnd="200dp"
-                app:dividerInsetStart="12dp"
-                app:layout_constraintBottom_toTopOf="@id/commit_avatar"
-                app:layout_constraintTop_toBottomOf="@id/commit_message_text" />
 
             <ImageView
                 android:id="@+id/commit_avatar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 loadImageUrl="@{commit.userCommited.avatarUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/commit_username_text"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider" />
+                app:layout_constraintTop_toBottomOf="@id/commit_message_text"
+                android:layout_marginBottom="3dp"/>
 
             <TextView
                 android:id="@+id/commit_username_text"
@@ -99,7 +97,7 @@
                 android:fontFamily="@font/manrope_extralight"
                 android:maxLines="1"
                 android:text="@{commit.userCommited.name}"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/commit_avatar"
                 app:layout_constraintStart_toEndOf="@id/commit_avatar"
                 app:layout_constraintTop_toTopOf="@id/commit_avatar" />

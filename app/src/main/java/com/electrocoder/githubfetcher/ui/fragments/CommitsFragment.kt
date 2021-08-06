@@ -31,7 +31,11 @@ class CommitsFragment : DaggerFragment() {
     private val args: CommitsFragmentArgs by navArgs()
 
     private var adapter = CommitsPagingAdapter()
-    private var observableAdapter: ObservableField<ConcatAdapter> = ObservableField()
+    private var observableAdapter: ObservableField<ConcatAdapter> = ObservableField(
+        adapter.withLoadStateFooter(
+            footer = ReposLoadStateAdapter { adapter.retry() }
+        )
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,16 +56,18 @@ class CommitsFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observableAdapter.set(
+        /*observableAdapter.set(
             adapter.withLoadStateFooter(
                 footer = ReposLoadStateAdapter { adapter.retry() }
             )
-        )
+        )*/
 
-        viewModel.repository.getRepoCommits(args.commitsUrl).asLiveData()
-            .observe(viewLifecycleOwner) {
-                adapter.submitData(lifecycle, it)
-            }
+        if(viewModel.commits.value == null)
+            viewModel.getCommits(args.commitsUrl)
+
+        viewModel.commits.observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
+        }
 
 
     }

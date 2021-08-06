@@ -23,21 +23,26 @@ class CommitsPagingSource(
         val position = params.key ?: 1
 
         return try {
-            val response = api.getRepoCommits(commitUrl, position)
+            val response = api.getRepoCommits(commitUrl, page = position)
             val commits = response.body()
 
-            val nextPage = if (commits?.isEmpty() == true) {
-                null
+            if(commits != null) {
+                val nextPage = if (commits.isEmpty()) {
+                    null
+                } else {
+                    position + 1 // 30 elements by default
+                }
+
+                LoadResult.Page(
+                    data = commits,
+                    prevKey = if (position == 1) null else position - 1,
+                    nextKey = nextPage
+                )
             } else {
-                position + 1 // 30 elements by default
+                LoadResult.Error(
+                    HttpException(response)
+                )
             }
-
-            LoadResult.Page(
-                data = commits ?: listOf(),
-                prevKey = if (position == 1) null else position + 1,
-                nextKey = nextPage
-            )
-
         } catch (e: IOException) {
             return LoadResult.Error(e)
         } catch (e: HttpException) {
