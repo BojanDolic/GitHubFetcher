@@ -5,4 +5,7 @@
     <string name="browse_repositories_text">Browse repositories:</string>
     <string name="retry_loading_text">Retry loading</string>
     <string name="no_search_result_text">Sorry, we couldn\'t find users matching entered username</string>
+
+    <string name="verified_text">Verified</string>
+    <string name="unverified_text">Unverified</string>
 </resources>
