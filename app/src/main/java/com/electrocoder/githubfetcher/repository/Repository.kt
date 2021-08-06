@@ -1,22 +1,18 @@
 package com.electrocoder.githubfetcher.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.electrocoder.githubfetcher.api.GitHubApi
+import com.electrocoder.githubfetcher.data.CommitsPagingSource
 import com.electrocoder.githubfetcher.data.RepositoriesPagingSource
 import com.electrocoder.githubfetcher.models.*
+import com.electrocoder.githubfetcher.models.commit.Commit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -68,9 +64,26 @@ class Repository @Inject constructor(
             config = PagingConfig(
                 pageSize = 30,
                 enablePlaceholders = false
-            ), pagingSourceFactory = { RepositoriesPagingSource(api, url) }
+            ),
+            pagingSourceFactory = { RepositoriesPagingSource(api, url) }
         ).flow.flowOn(Dispatchers.IO)
     }
 
-    //fun getRepositories(url: String, page: Int):
+    /**
+     * Function which requests repository commits using url
+     * and returns paginated data
+     * @param url url to fetch commits from
+     *
+     * @return flow of paginated data
+     */
+    fun getRepoCommits(url: String): Flow<PagingData<Commit>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 30,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { CommitsPagingSource(api, url) }
+        ).flow.flowOn(Dispatchers.IO)
+    }
+
 }

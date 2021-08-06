@@ -8,7 +8,9 @@ import com.electrocoder.githubfetcher.databinding.RepoListItemBinding
 import com.electrocoder.githubfetcher.models.Repo
 import com.electrocoder.githubfetcher.utils.diffutils.ReposDiffUtilCallback
 
-class ReposPagingAdapter : PagingDataAdapter<Repo, ReposPagingAdapter.ViewHolder>(ReposDiffUtilCallback()) {
+class ReposPagingAdapter(
+    val click: (Repo) -> Unit
+) : PagingDataAdapter<Repo, ReposPagingAdapter.ViewHolder>(ReposDiffUtilCallback()) {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -30,10 +32,12 @@ class ReposPagingAdapter : PagingDataAdapter<Repo, ReposPagingAdapter.ViewHolder
 
         fun bind(repo: Repo?) {
             binding.repo = repo
+
+            binding.root.setOnClickListener {
+                click(getItem(bindingAdapterPosition) ?: Repo())
+            }
         }
-
-
-
     }
+
 
 }

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ObservableBoolean
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -30,12 +31,16 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.math.log
 
+private const val TAG = "MainFragment"
+
 class MainFragment : DaggerFragment(), UserListAdapter.OnUserClicked {
 
     @Inject
     lateinit var providerFactory: ViewModelFactory
 
     val viewModel by viewModels<MainViewModel> { providerFactory }
+
+    private var emptyList: ObservableBoolean = ObservableBoolean(false)
 
     private var adapter = UserListAdapter().apply {
         stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
@@ -54,6 +59,7 @@ class MainFragment : DaggerFragment(), UserListAdapter.OnUserClicked {
 
         binding.viewmodel = viewModel
         binding.adapter = adapter
+        binding.emptylist = emptyList
 
         return binding.root
     }
@@ -67,6 +73,9 @@ class MainFragment : DaggerFragment(), UserListAdapter.OnUserClicked {
             if(response != null) {
                 val users = response.users
                 adapter.submitList(users)
+                emptyList.set(users.isEmpty())
+
+                Log.d(TAG, "onViewCreated: IS LIST EMPTY $emptyList")
             } else {
 
             }

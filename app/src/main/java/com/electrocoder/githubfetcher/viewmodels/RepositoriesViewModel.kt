@@ -1,9 +1,8 @@
 package com.electrocoder.githubfetcher.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.electrocoder.githubfetcher.models.Repo
 import com.electrocoder.githubfetcher.repository.Repository
 import javax.inject.Inject
@@ -12,8 +11,16 @@ class RepositoriesViewModel @Inject  constructor(
     val repository: Repository
 ) : ViewModel() {
 
-    fun getRepositories(url: String): LiveData<PagingData<Repo>> {
-        return repository.getUserRepositories(url).asLiveData()
+    private val urlString: MutableLiveData<String> = MutableLiveData()
+
+    val repositories: LiveData<PagingData<Repo>> = Transformations.switchMap(urlString) { url ->
+        repository.getUserRepositories(url)
+            .cachedIn(viewModelScope)
+            .asLiveData(viewModelScope.coroutineContext)
+    }
+
+    fun getRepositories(url: String) {
+        urlString.value = url
     }
 
 

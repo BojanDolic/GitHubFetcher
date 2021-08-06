@@ -30,7 +30,6 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
         fun create(@BindsInstance app: Application): AppComponent
     }
 
-    //fun inject(repository: Repository)
 
 
 }

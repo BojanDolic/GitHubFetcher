@@ -6,19 +6,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.databinding.ObservableBoolean
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import com.electrocoder.githubfetcher.R
 import com.electrocoder.githubfetcher.databinding.RepositoriesFragmentBinding
 import com.electrocoder.githubfetcher.databinding.UserDetailsFragmentBinding
 import com.electrocoder.githubfetcher.di.viewmodelfactory.ViewModelFactory
+import com.electrocoder.githubfetcher.models.Repo
 import com.electrocoder.githubfetcher.ui.adapters.ReposLoadStateAdapter
 import com.electrocoder.githubfetcher.ui.adapters.ReposPagingAdapter
 import com.electrocoder.githubfetcher.viewmodels.RepositoriesViewModel
 import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RepositoriesFragment : DaggerFragment() {
@@ -30,7 +36,11 @@ class RepositoriesFragment : DaggerFragment() {
 
     val args: RepositoriesFragmentArgs by navArgs()
 
-    private val reposAdapter = ReposPagingAdapter()
+    private val loadingBool = ObservableBoolean(false)
+
+    private val reposAdapter = ReposPagingAdapter() {
+        handleClick(it)
+    }
     private var recyclerViewAdapter = ConcatAdapter()
 
     var _binding: RepositoriesFragmentBinding? = null
@@ -47,6 +57,7 @@ class RepositoriesFragment : DaggerFragment() {
         )
 
         binding.adapter = reposAdapter
+        binding.loading = loadingBool
 
 
         return binding.root
@@ -66,10 +77,25 @@ class RepositoriesFragment : DaggerFragment() {
             )
         }
 
-        viewmodel.getRepositories(args.reposUrl).observe(viewLifecycleOwner, { pagingData ->
-            reposAdapter.submitData(lifecycle, pagingData)
+        if(viewmodel.repositories.value == null)
+            viewmodel.getRepositories(args.reposUrl)
+
+        viewmodel.repositories.observe(viewLifecycleOwner, { pagingData ->
+            reposAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
         })
 
+
+
+        reposAdapter.addLoadStateListener { combinedLoadStates ->
+            //binding.loadingProgress.isVisible = combinedLoadStates.source.refresh is LoadState.Loading
+            loadingBool.set(combinedLoadStates.source.refresh is LoadState.Loading)
+        }
+
+
+
+    }
+
+    private fun handleClick(repo: Repo) {
 
     }
 

@@ -2,4 +2,7 @@
     <string name="app_name">GitHubFetcher</string>
     <string name="username_search_text">Enter GitHub username</string>
     <string name="public_repositories_text">Public repositories:</string>
+    <string name="browse_repositories_text">Browse repositories:</string>
+    <string name="retry_loading_text">Retry loading</string>
+    <string name="no_search_result_text">Sorry, we couldn\'t find users matching entered username</string>
 </resources>

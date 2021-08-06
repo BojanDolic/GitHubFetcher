@@ -1,6 +1,8 @@
 package com.electrocoder.githubfetcher.viewmodels
 
 import android.util.Log
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.electrocoder.githubfetcher.di.AppComponent
 import com.electrocoder.githubfetcher.models.ApiResponse
@@ -28,20 +30,6 @@ class MainViewModel @Inject constructor(
     val usersList: LiveData<UsersResponse> = Transformations.switchMap(searchText) { searchQuery ->
         repository.searchUsers(searchQuery).asLiveData(viewModelScope.coroutineContext)
     }
-
-
-    /*fun searchUsers(q: String): MutableLiveData<UsersResponse> {
-        val result: MutableLiveData<UsersResponse> = MutableLiveData()
-        viewModelScope.launch {
-            repository.searchUsers(q)
-                .collect { 
-                    value: UsersResponse ->
-                    users.value = value
-                }
-        }
-        return result
-    }*/
-
 
     fun setSearchQuery(q: String) {
         var textChange = ""

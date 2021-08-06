@@ -5,14 +5,10 @@ import com.google.gson.annotations.SerializedName
 data class Repo(
 
     @SerializedName("id")
-    val id: Long,
+    val id: Long = 0,
 
     @SerializedName("name")
     val repoName: String = "",
-
-    @SerializedName("owner")
-    val owner: User?,
-
 
     @SerializedName("description")
     val description: String = "",
@@ -21,8 +17,8 @@ data class Repo(
     val commitsUrl: String = "",
 
     @SerializedName("watchers")
-    val watchers: Int,
+    val watchers: Int = 0,
 
     @SerializedName("open_issues")
-    val openIssues: Int
+    val openIssues: Int = 0
 )

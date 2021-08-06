@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Users/Bojan/AndroidStudioProjects/GitHubFetcher/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Bojan/AndroidStudioProjects/GitHubFetcher/app/src/main/res/layout/adapter_loading_error_states.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Bojan/AndroidStudioProjects/GitHubFetcher/app/src/main/res/layout/commit_item.xml" value="0.33" />
+        <entry key="..\:/Users/Bojan/AndroidStudioProjects/GitHubFetcher/app/src/main/res/layout/commits_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Bojan/AndroidStudioProjects/GitHubFetcher/app/src/main/res/layout/main_fragment.xml" value="0.33" />
         <entry key="..\:/Users/Bojan/AndroidStudioProjects/GitHubFetcher/app/src/main/res/layout/repo_list_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Bojan/AndroidStudioProjects/GitHubFetcher/app/src/main/res/layout/repositories_fragment.xml" value="0.36666666666666664" />

@@ -1,9 +1,9 @@
 package com.electrocoder.githubfetcher.di.modules
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.electrocoder.githubfetcher.di.viewmodelfactory.ViewModelFactory
+import com.electrocoder.githubfetcher.viewmodels.CommitsViewModel
 import com.electrocoder.githubfetcher.viewmodels.MainViewModel
 import com.electrocoder.githubfetcher.viewmodels.RepositoriesViewModel
 import com.electrocoder.githubfetcher.viewmodels.UserDetailsViewModel
@@ -33,6 +33,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RepositoriesViewModel::class)
     abstract fun reposViewModel(repositoriesViewModel: RepositoriesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CommitsViewModel::class)
+    abstract fun commitsViewModel(commitsViewModel: CommitsViewModel): ViewModel
 
 
 

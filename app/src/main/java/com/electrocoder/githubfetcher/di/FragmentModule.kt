@@ -1,6 +1,7 @@
 package com.electrocoder.githubfetcher.di
 
 import com.electrocoder.githubfetcher.MainActivity
+import com.electrocoder.githubfetcher.ui.fragments.CommitsFragment
 import com.electrocoder.githubfetcher.ui.fragments.MainFragment
 import com.electrocoder.githubfetcher.ui.fragments.RepositoriesFragment
 import com.electrocoder.githubfetcher.ui.fragments.UserDetailsFragment
@@ -23,6 +24,10 @@ abstract class FragmentModule {
     @FragmentScoped
     @ContributesAndroidInjector
     abstract fun contributesReposFragment(): RepositoriesFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    abstract fun contributesCommitsFragment(): CommitsFragment
 
 
     @MustBeDocumented
