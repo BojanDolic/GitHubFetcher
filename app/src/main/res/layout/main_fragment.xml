@@ -11,11 +11,16 @@
 
         <variable
             name="adapter"
-            type="com.electrocoder.githubfetcher.ui.adapters.UserListAdapter" />
+            type="androidx.recyclerview.widget.ConcatAdapter" />
 
         <variable
             name="emptylist"
             type="androidx.databinding.ObservableBoolean" />
+
+        <variable
+            name="loadingData"
+            type="androidx.databinding.ObservableBoolean" />
+
     </data>
     
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -63,6 +68,17 @@
             android:layout_marginTop="12dp"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:spanCount="2"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:indeterminate="true"
+            android:indeterminateBehavior="cycle"
+            android:visibility="@{loadingData ? View.VISIBLE : View.GONE}"/>
 
         <LinearLayout
             android:layout_width="match_parent"

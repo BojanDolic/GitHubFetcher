@@ -1,17 +1,14 @@
 package com.electrocoder.githubfetcher.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.electrocoder.githubfetcher.databinding.UserLayoutBinding
 import com.electrocoder.githubfetcher.models.User
 import com.electrocoder.githubfetcher.utils.diffutils.UserDiffUtil
 
-class UserListAdapter: ListAdapter<User, UserListAdapter.ViewHolder>(UserDiffUtil()) {
+class UsersPagingAdapter: PagingDataAdapter<User, UsersPagingAdapter.ViewHolder>(UserDiffUtil()) {
 
     interface OnUserClicked {
         fun onUserClicked(user: User)
@@ -28,7 +25,7 @@ class UserListAdapter: ListAdapter<User, UserListAdapter.ViewHolder>(UserDiffUti
         fun update(user: User) {
             binding.user = user
             binding.root.setOnClickListener {
-                click.onUserClicked(getItem(bindingAdapterPosition))
+                click.onUserClicked(getItem(bindingAdapterPosition) ?: User())
             }
         }
 
@@ -45,7 +42,7 @@ class UserListAdapter: ListAdapter<User, UserListAdapter.ViewHolder>(UserDiffUti
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = getItem(position)
+        val user = getItem(position) ?: User()
         holder.update(user)
     }
 

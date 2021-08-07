@@ -16,6 +16,7 @@ import com.electrocoder.githubfetcher.R
 import com.electrocoder.githubfetcher.databinding.UserDetailsFragmentBinding
 import com.electrocoder.githubfetcher.di.viewmodelfactory.ViewModelFactory
 import com.electrocoder.githubfetcher.viewmodels.UserDetailsViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -53,7 +54,13 @@ class UserDetailsFragment : DaggerFragment() {
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
 
         viewModel._user.observe(viewLifecycleOwner) { user ->
-            binding.user = user
+            if(user != null)
+                binding.user = user
+            else Snackbar.make(
+                view,
+                getString(R.string.loading_data_error_text),
+                Snackbar.LENGTH_LONG
+            ).show()
         }
 
         if(viewModel.user == null)

@@ -8,6 +8,7 @@ import com.electrocoder.githubfetcher.di.modules.ViewModelModule
 import com.electrocoder.githubfetcher.repository.Repository
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
@@ -15,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        AndroidSupportInjectionModule::class,
+        AndroidInjectionModule::class,
         NetworkModule::class,
         RepositoryModule::class,
         ViewModelModule::class,
@@ -29,7 +30,5 @@ interface AppComponent : AndroidInjector<DaggerApplication> {
     interface Factory {
         fun create(@BindsInstance app: Application): AppComponent
     }
-
-
 
 }

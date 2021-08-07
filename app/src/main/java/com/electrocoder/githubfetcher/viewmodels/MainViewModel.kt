@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.electrocoder.githubfetcher.di.AppComponent
 import com.electrocoder.githubfetcher.models.ApiResponse
 import com.electrocoder.githubfetcher.models.User
@@ -19,16 +21,14 @@ class MainViewModel @Inject constructor(
     val repository: Repository
 ) : ViewModel() {
 
-    //@Inject lateinit
-
     private var searchJob: Job = Job()
 
     private val searchText: MutableLiveData<String> = MutableLiveData()
 
-    private val users: MutableLiveData<UsersResponse> = MutableLiveData()
-
-    val usersList: LiveData<UsersResponse> = Transformations.switchMap(searchText) { searchQuery ->
-        repository.searchUsers(searchQuery).asLiveData(viewModelScope.coroutineContext)
+    val usersList: LiveData<PagingData<User>> = Transformations.switchMap(searchText) { searchQuery ->
+        repository.searchUsers(searchQuery)
+            .asLiveData(viewModelScope.coroutineContext)
+            .cachedIn(viewModelScope)
     }
 
     fun setSearchQuery(q: String) {
@@ -38,7 +38,7 @@ class MainViewModel @Inject constructor(
                 searchJob.cancel()
 
             searchJob = viewModelScope.launch {
-                delay(1500)
+                delay(1200)
                 if(q.isNotEmpty() && q.length > 3 && q != textChange) {
                     searchText.value = q
                     textChange = q

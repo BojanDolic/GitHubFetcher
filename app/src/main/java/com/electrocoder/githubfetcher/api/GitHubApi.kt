@@ -12,7 +12,9 @@ interface GitHubApi {
      * @param q query
      */
     @GET("search/users")
-    suspend fun searchUsers(@Query("q") q: String): Response<UsersResponse>
+    suspend fun searchUsers(
+        @Query("q") q: String,
+        @Query("page") page: Int): Response<UsersResponse>
 
     /**
      * Sends a GET request to server for user details

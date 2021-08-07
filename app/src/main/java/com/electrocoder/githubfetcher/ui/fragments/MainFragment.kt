@@ -1,51 +1,50 @@
 package com.electrocoder.githubfetcher.ui.fragments
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.electrocoder.githubfetcher.DaggerApplication
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.electrocoder.githubfetcher.R
-import com.electrocoder.githubfetcher.api.GitHubApi
-import com.electrocoder.githubfetcher.api.RetrofitClient
 import com.electrocoder.githubfetcher.databinding.MainFragmentBinding
 import com.electrocoder.githubfetcher.di.viewmodelfactory.ViewModelFactory
-import com.electrocoder.githubfetcher.models.ApiResponse
 import com.electrocoder.githubfetcher.models.User
-import com.electrocoder.githubfetcher.repository.Repository
-import com.electrocoder.githubfetcher.ui.adapters.UserListAdapter
+import com.electrocoder.githubfetcher.ui.adapters.ReposLoadStateAdapter
+import com.electrocoder.githubfetcher.ui.adapters.UsersPagingAdapter
 import com.electrocoder.githubfetcher.viewmodels.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.math.log
 
 private const val TAG = "MainFragment"
 
-class MainFragment : DaggerFragment(), UserListAdapter.OnUserClicked {
+class MainFragment : DaggerFragment(), UsersPagingAdapter.OnUserClicked {
 
     @Inject
     lateinit var providerFactory: ViewModelFactory
 
     val viewModel by viewModels<MainViewModel> { providerFactory }
 
-    private var emptyList: ObservableBoolean = ObservableBoolean(false)
+    private var emptyListBool: ObservableBoolean = ObservableBoolean(false)
+    private var loadingData: ObservableBoolean = ObservableBoolean(false)
 
-    private var adapter = UserListAdapter().apply {
-        stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+    private var adapter = UsersPagingAdapter().apply {
         setUserClickListener(this@MainFragment)
     }
+
+    private val recyclerAdapter: ObservableField<ConcatAdapter> = ObservableField(
+        adapter.withLoadStateFooter(
+            footer = ReposLoadStateAdapter { adapter.retry() }
+        )
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,8 +57,9 @@ class MainFragment : DaggerFragment(), UserListAdapter.OnUserClicked {
         )
 
         binding.viewmodel = viewModel
-        binding.adapter = adapter
-        binding.emptylist = emptyList
+        binding.adapter = recyclerAdapter.get()
+        binding.emptylist = emptyListBool
+        binding.loadingData = loadingData
 
         return binding.root
     }
@@ -68,20 +68,41 @@ class MainFragment : DaggerFragment(), UserListAdapter.OnUserClicked {
         super.onViewCreated(view, savedInstanceState)
 
 
-        viewModel.usersList.observe(viewLifecycleOwner, { response ->
-
-            if(response != null) {
-                val users = response.users
-                adapter.submitList(users)
-                emptyList.set(users.isEmpty())
-
-                Log.d(TAG, "onViewCreated: IS LIST EMPTY $emptyList")
-            } else {
-
-            }
-
-
+        viewModel.usersList.observe(viewLifecycleOwner, { pagingData ->
+            adapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
         })
+
+        adapter.addLoadStateListener { combinedLoadStates ->
+            // Check to see if response is empty which means that no users were found
+            emptyListBool.set(
+                combinedLoadStates.source.refresh is LoadState.NotLoading
+                        && combinedLoadStates.append.endOfPaginationReached
+                        && adapter.itemCount == 0
+            )
+
+            // Show loading bar while data is being fetched
+            loadingData.set(
+                combinedLoadStates.refresh is LoadState.Loading
+                        && adapter.itemCount == 0
+            )
+
+            // If error occurs, show snackbar with retry button
+            if(combinedLoadStates.refresh is LoadState.Error
+                && !combinedLoadStates.refresh.endOfPaginationReached)
+                    Snackbar.make(
+                        view,
+                        getString(R.string.loading_data_error_text),
+                        Snackbar.LENGTH_LONG
+                    ).apply {
+                        setAction(
+                            "Retry"
+                        ) {
+                            adapter.retry()
+                            this.dismiss()
+                        }
+                    }.show()
+
+        }
 
     }
 

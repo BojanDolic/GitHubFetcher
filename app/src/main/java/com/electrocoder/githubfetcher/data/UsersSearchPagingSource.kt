@@ -3,39 +3,38 @@ package com.electrocoder.githubfetcher.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.electrocoder.githubfetcher.api.GitHubApi
-import com.electrocoder.githubfetcher.models.commit.Commit
+import com.electrocoder.githubfetcher.models.User
+import com.electrocoder.githubfetcher.models.UsersResponse
 import retrofit2.HttpException
 import java.io.IOException
 
-class CommitsPagingSource(
-    val api: GitHubApi,
-    val commitUrl: String
-) : PagingSource<Int, Commit>() {
+class UsersSearchPagingSource(
+    private val api: GitHubApi,
+    private val searchQuery: String
+) : PagingSource<Int, User>() {
 
-    override fun getRefreshKey(state: PagingState<Int, Commit>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, User>): Int? {
         return state.anchorPosition?.let { pos ->
             state.closestPageToPosition(pos)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(pos)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Commit> {
-
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, User> {
         val position = params.key ?: 1
 
         return try {
-            val response = api.getRepoCommits(commitUrl, page = position)
-            val commits = response.body()
-
-            if(commits != null) {
-                val nextPage = if (commits.isEmpty()) {
+            val response = api.searchUsers(searchQuery, position)
+            val users = response.body()
+            if(users != null) {
+                val nextPage = if (users.users.isEmpty()) {
                     null
                 } else {
                     position + 1 // 30 elements by default
                 }
 
                 LoadResult.Page(
-                    data = commits,
+                    data = users.users,
                     prevKey = if (position == 1) null else position - 1,
                     nextKey = nextPage
                 )
@@ -49,6 +48,8 @@ class CommitsPagingSource(
         } catch (e: HttpException) {
             return LoadResult.Error(e)
         }
+
     }
+
 
 }

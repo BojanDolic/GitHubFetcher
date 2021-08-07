@@ -7,12 +7,14 @@ import androidx.paging.PagingData
 import com.electrocoder.githubfetcher.api.GitHubApi
 import com.electrocoder.githubfetcher.data.CommitsPagingSource
 import com.electrocoder.githubfetcher.data.RepositoriesPagingSource
+import com.electrocoder.githubfetcher.data.UsersSearchPagingSource
 import com.electrocoder.githubfetcher.models.*
 import com.electrocoder.githubfetcher.models.commit.Commit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -21,24 +23,15 @@ class Repository @Inject constructor(
     val api: GitHubApi
 ) {
 
-
-    fun searchUsers(q: String): Flow<UsersResponse> = flow {
-        try {
-            val response = api.searchUsers(q)
-
-            if (response.isSuccessful) {
-                val body = response.body()
-
-                if (body != null) {
-                    emit(body)
-                } else emit(UsersResponse(poruka = "Body je null"))
-
-            }
-        } catch (e: Exception) {
-            Log.d("TAG", "getUserByName: ${e.message}")
-        }
-
-    }.flowOn(Dispatchers.IO)
+    fun searchUsers(search: String): Flow<PagingData<User>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 30,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { UsersSearchPagingSource(api, search) }
+        ).flow.flowOn(Dispatchers.IO)
+    }
 
 
     fun getUserByName(name: String) = flow {
@@ -53,7 +46,7 @@ class Repository @Inject constructor(
 
             } else emit(User(0))
         } catch (e: Exception) {
-            Log.d("TAG", "getUserByName: ${e.message}")
+            emit(null)
         }
 
     }.flowOn(Dispatchers.IO)
