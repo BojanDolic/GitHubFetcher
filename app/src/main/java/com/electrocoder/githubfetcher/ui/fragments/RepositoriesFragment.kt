@@ -1,30 +1,23 @@
 package com.electrocoder.githubfetcher.ui.fragments
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.ObservableBoolean
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
-import com.electrocoder.githubfetcher.R
 import com.electrocoder.githubfetcher.databinding.RepositoriesFragmentBinding
-import com.electrocoder.githubfetcher.databinding.UserDetailsFragmentBinding
 import com.electrocoder.githubfetcher.di.viewmodelfactory.ViewModelFactory
 import com.electrocoder.githubfetcher.models.Repo
-import com.electrocoder.githubfetcher.ui.adapters.ReposLoadStateAdapter
+import com.electrocoder.githubfetcher.ui.adapters.PagingLoadStatesAdapter
 import com.electrocoder.githubfetcher.ui.adapters.ReposPagingAdapter
 import com.electrocoder.githubfetcher.viewmodels.RepositoriesViewModel
 import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RepositoriesFragment : DaggerFragment() {
@@ -73,7 +66,7 @@ class RepositoriesFragment : DaggerFragment() {
 
         binding.reposRecyclerview.apply {
             this.adapter = reposAdapter.withLoadStateFooter(
-                footer = ReposLoadStateAdapter { reposAdapter.retry() }
+                footer = PagingLoadStatesAdapter { reposAdapter.retry() }
             )
         }
 
@@ -87,7 +80,6 @@ class RepositoriesFragment : DaggerFragment() {
 
 
         reposAdapter.addLoadStateListener { combinedLoadStates ->
-            //binding.loadingProgress.isVisible = combinedLoadStates.source.refresh is LoadState.Loading
             loadingBool.set(combinedLoadStates.source.refresh is LoadState.Loading)
         }
 

@@ -30,7 +30,7 @@ class UsersSearchPagingSource(
                 val nextPage = if (users.users.isEmpty()) {
                     null
                 } else {
-                    position + 1 // 30 elements by default
+                    position + 1
                 }
 
                 LoadResult.Page(

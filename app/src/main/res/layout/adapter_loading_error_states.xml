@@ -8,6 +8,14 @@
         <variable
             name="state"
             type="androidx.paging.LoadState" />
+
+        <variable
+            name="loading"
+            type="androidx.databinding.ObservableBoolean" />
+
+        <variable
+            name="error"
+            type="androidx.databinding.ObservableBoolean" />
     </data>
 
     <LinearLayout
@@ -21,7 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:indeterminate="true"/>
+            android:indeterminate="true"
+            android:visibility="@{loading ? View.VISIBLE : View.GONE}"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/retry_loading_btn"
@@ -29,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:layout_gravity="center"
+            android:visibility="@{error ? View.VISIBLE : View.GONE}"
             android:text="@string/retry_loading_text"/>
 
 

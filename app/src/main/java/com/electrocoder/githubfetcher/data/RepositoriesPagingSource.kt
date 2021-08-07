@@ -25,7 +25,7 @@ class RepositoriesPagingSource(
                 val nextPage = if (repositories.isEmpty()) {
                     null
                 } else {
-                    position + 1 // 30 elements by default
+                    position + 1
                 }
 
                 LoadResult.Page(

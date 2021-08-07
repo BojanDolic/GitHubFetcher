@@ -10,14 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.electrocoder.githubfetcher.R
 import com.electrocoder.githubfetcher.databinding.MainFragmentBinding
 import com.electrocoder.githubfetcher.di.viewmodelfactory.ViewModelFactory
 import com.electrocoder.githubfetcher.models.User
-import com.electrocoder.githubfetcher.ui.adapters.ReposLoadStateAdapter
+import com.electrocoder.githubfetcher.ui.adapters.PagingLoadStatesAdapter
 import com.electrocoder.githubfetcher.ui.adapters.UsersPagingAdapter
 import com.electrocoder.githubfetcher.viewmodels.MainViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -42,7 +39,7 @@ class MainFragment : DaggerFragment(), UsersPagingAdapter.OnUserClicked {
 
     private val recyclerAdapter: ObservableField<ConcatAdapter> = ObservableField(
         adapter.withLoadStateFooter(
-            footer = ReposLoadStateAdapter { adapter.retry() }
+            footer = PagingLoadStatesAdapter { adapter.retry() }
         )
     )
 

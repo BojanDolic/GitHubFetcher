@@ -52,6 +52,12 @@ class Repository @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
+    /**
+     * Function which requests all public user repositories
+     * @param url full url to fetch repos from
+     *
+     * @return flow of paginated data
+     */
     fun getUserRepositories(url: String): Flow<PagingData<Repo>> {
         return Pager(
             config = PagingConfig(

@@ -1,20 +1,12 @@
 package com.electrocoder.githubfetcher.viewmodels
 
-import android.util.Log
-import androidx.databinding.Bindable
-import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.electrocoder.githubfetcher.di.AppComponent
-import com.electrocoder.githubfetcher.models.ApiResponse
 import com.electrocoder.githubfetcher.models.User
-import com.electrocoder.githubfetcher.models.UsersResponse
 import com.electrocoder.githubfetcher.repository.Repository
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
-import kotlin.math.log
 
 
 class MainViewModel @Inject constructor(

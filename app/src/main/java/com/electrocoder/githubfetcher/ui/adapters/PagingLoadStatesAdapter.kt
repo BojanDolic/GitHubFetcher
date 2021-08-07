@@ -3,14 +3,18 @@ package com.electrocoder.githubfetcher.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.databinding.ObservableBoolean
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.electrocoder.githubfetcher.databinding.AdapterLoadingErrorStatesBinding
 
-class ReposLoadStateAdapter(
+class PagingLoadStatesAdapter(
     val retry: () -> Unit
-) : LoadStateAdapter<ReposLoadStateAdapter.ViewHolder>() {
+) : LoadStateAdapter<PagingLoadStatesAdapter.ViewHolder>() {
+
+    val loadingBool = ObservableBoolean(false)
+    val errorBool = ObservableBoolean(false)
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): ViewHolder {
         val binding = AdapterLoadingErrorStatesBinding.inflate(
@@ -18,6 +22,10 @@ class ReposLoadStateAdapter(
             parent,
             false
         )
+
+        binding.loading = loadingBool
+        binding.error = errorBool
+
         return ViewHolder(binding)
     }
 
@@ -31,8 +39,8 @@ class ReposLoadStateAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(loadState: LoadState) {
-            binding.progressBarLoading.isVisible = loadState is LoadState.Loading
-            binding.retryLoadingBtn.isVisible = loadState !is LoadState.Loading
+            loadingBool.set(loadState is LoadState.Loading)
+            errorBool.set(loadState !is LoadState.Loading)
         }
 
         init {

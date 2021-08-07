@@ -31,7 +31,7 @@ class CommitsPagingSource(
                 val nextPage = if (commits.isEmpty()) {
                     null
                 } else {
-                    position + 1 // 30 elements by default
+                    position + 1
                 }
 
                 LoadResult.Page(
